@@ -7,6 +7,16 @@
 
 ---
 
+## 🎯 What success looks like (business)
+**Business metrics:** quote turnaround time ↓ · % drawings auto-processed without review ↑ · cost per quote ↓ · scrap / mis-quote rate ↓ · RFQ throughput ↑ · reviewer hours saved.
+
+The system is a win for Xometry if it:
+- **Turns customer drawings into instant, accurate quotes** — automated extraction feeds the quoting engine so RFQs are priced in seconds, not hours/days of manual engineering review.
+- **Scales volume without headcount** — handle far more incoming drawings at the same ops cost; reviewers only touch low-confidence cases.
+- **Protects margin & avoids scrap** — accurate tolerances/GD&T mean correct pricing and correctly-made parts; a missed or mis-read callout = a mis-quote or a scrapped part.
+
+---
+
 ## 1. Clarify & scope
 - **Volume / latency:** batch backfill (100k/day) vs near-real-time for a live quote? Design for both — async batch + a low-latency path.
 - **Inputs:** **vector PDF vs raster scan vs native CAD** — branches the pipeline (huge point: don't OCR geometry already in a vector file).

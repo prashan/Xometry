@@ -7,6 +7,17 @@
 
 ---
 
+## 🎯 What success looks like (business)
+**Business metrics:** time-to-quote ↓ · quote / manufacturing error rate ↓ · engineer productivity ↑ · answer consistency ↑ · % questions self-served ↑.
+
+The system is a win for Xometry if it:
+- **Speeds up quoting & DFM feedback** — engineers and the quoting tools get instant, accurate, **cited** answers instead of hunting through specs/standards → faster time-to-quote.
+- **Reduces costly errors** — fewer mis-quotes or manufacturing mistakes from a wrong/outdated DFM rule or spec (each one = scrap or lost margin).
+- **Scales tribal knowledge** — captures expert manufacturing know-how so any engineer (and the marketplace) can use it, instead of relying on a few specialists.
+- **Stays trustworthy & compliant** — every answer is grounded, cited, and auditable, and ITAR/entitled data never leaks.
+
+---
+
 ## 1. Clarify & scope (say assumptions out loud)
 - **Objective:** accurate, **cited**, up-to-date answers grounded in approved sources — no hallucinated specs (a wrong DFM rule mis-prices or mis-manufactures a part).
 - **Consumers:** internal engineering copilot, the quoting / DFM-feedback system, supplier-ops.

@@ -7,6 +7,16 @@
 
 ---
 
+## 🎯 What success looks like (business)
+**Business metrics:** intake cycle time ↓ · % docs auto-processed ↑ · manual data-entry cost ↓ · intake error rate ↓ · document/order volume handled per head ↑.
+
+The system is a win for Xometry if it:
+- **Automates order/RFQ intake** across all document types (RFQs, POs, specs, drawings, CAD), removing manual data entry and shrinking how long it takes an incoming document to become an actionable order/quote.
+- **Increases capacity** — process more inbound documents without adding ops staff; humans handle only genuinely ambiguous cases.
+- **Reduces intake errors** that otherwise ripple downstream into wrong quotes or orders.
+
+---
+
 ## 1. Clarify & scope
 - **Inputs:** mixed — RFQs (email/PDF), purchase orders (structured-ish forms), spec sheets (text+tables), engineering drawings (PDF/scan), native CAD (STEP/IGES).
 - **Output:** a **unified structured schema** the quoting/marketplace systems consume, with per-field confidence.

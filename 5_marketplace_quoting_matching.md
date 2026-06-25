@@ -9,6 +9,16 @@
 
 ---
 
+## 🎯 What success looks like (business)
+**Business metrics:** quote win/conversion rate ↑ · realized margin accuracy ↑ · on-time delivery rate ↑ · defect/quality rate ↓ · capacity utilization ↑ · buyer + supplier retention ↑.
+
+The system is a win for Xometry if it:
+- **Wins more business at healthy margin** — instant, accurate quotes convert buyers while pricing protects margin (the win-rate ↔ margin balance).
+- **Matches jobs to the right suppliers** — high on-time delivery and quality at good cost, with balanced capacity across the supplier network.
+- **Keeps both sides of the marketplace healthy** — buyers get fast, reliable quotes and delivery; suppliers get well-matched, profitable work → retention on both sides.
+
+---
+
 ## 1. Clarify & scope
 - **Quoting:** given a part (geometry/features from extraction or CAD, material, process, quantity, tolerances, lead time), predict a **price** (and cost + margin) instantly.
 - **Matching:** given a job, rank suppliers by who can make it well, on time, at cost — a **ranking/retrieval** problem with capacity/constraints.

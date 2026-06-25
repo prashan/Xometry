@@ -7,6 +7,16 @@
 
 ---
 
+## 🎯 What success looks like (business)
+**Business metrics:** $/request (and total GenAI infra spend) ↓ · SLA/latency adherence ↑ · uptime ↑ · GPU utilization/efficiency ↑ · time-to-ship a new model ↓.
+
+The platform is a win for Xometry if it:
+- **Makes GenAI features economically viable** — keeps **cost per request** low enough that automated quoting/extraction/copilot actually save money versus the manual process they replace.
+- **Keeps experiences fast & reliable** — meets latency SLAs so the copilot and quote flow feel instant, with high availability (no outages blocking quoting).
+- **Lets the team ship safely & quickly** — better models roll out with canary + rollback, so improvements reach production fast without regressions or incidents.
+
+---
+
 ## 1. Clarify & scope
 - **Tenants/workloads:** interactive (RAG copilot — low latency) vs batch (drawing/doc extraction — throughput); mixed model sizes; self-hosted (ITAR) + maybe some API.
 - **SLAs per tier:** e.g., interactive p95 first-token < 1s, full < 3s; batch optimizes $/token.
