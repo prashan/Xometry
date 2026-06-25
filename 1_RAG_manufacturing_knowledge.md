@@ -71,7 +71,20 @@ flowchart TD
 - **Lifecycle:** embedding-model upgrade = planned full re-embed (a migration); golden-set + thumbs-down feedback loop; CI gate on recall@k + faithfulness before any index/prompt change ships.
 - **Observability:** trace query · retrieved chunks · citations · versions · latency · cost.
 
-## 8. Interviewer probes (model answers)
+## 8. Scaling the RAG system
+Scaling is four axes — **throughput, latency, cost, reliability** — and the trick is to separate the cheap stateless parts from the expensive ones (LLM generation + vector search). Walk it layer by layer:
+
+- **Stateless, horizontal app/orchestration tier.** Gateway, query rewriter, and assembler are stateless behind a load balancer, autoscaled on QPS. Any conversational/session state lives in an external store (Redis/DynamoDB + TTL) — never in process — so any node serves any request.
+- **Vector DB.** Scale with **sharding** (by tenant/domain) + **read replicas**; tune ANN params (`ef_search`/`nprobe`, HNSW vs IVF-PQ) for the recall-vs-latency-vs-memory point; quantize embeddings (PQ) to fit memory. Keep the **embedding cache** hot for repeated queries.
+- **Re-ranker.** The cross-encoder is a latency/cost knob: cap the shortlist (e.g., re-rank top 50–100), batch on GPU, and skip re-ranking for high-confidence retrievals.
+- **LLM generation tier (the dominant cost/latency).** Continuous batching + paged-attention KV cache (vLLM); **prefix-cache the shared system prompt**; **stream tokens** so first-token latency is fast even on long answers; **model tiering** — a small model for simple lookups, the large model only for hard synthesis; **semantic answer cache** (scoped per entitlement) for repeated DFM/spec questions. Autoscale GPU pools on queue depth + utilization.
+- **Caching at every layer:** embedding cache → retrieval/result cache → semantic answer cache → prefix cache. In a manufacturing knowledge base many queries repeat (same DFM rules, same materials), so caching pays off hard.
+- **Protect under load:** per-tenant rate limits/quotas, priority queue, load shedding/backpressure when GPUs saturate, circuit breakers, and **graceful degradation** (fall back to retrieval-only "here are the source passages" if generation is down).
+- **Quantify (binding constraint is usually GPU memory or vector-search latency):** QPS, p95 end-to-end, tokens/sec/GPU, KV-cache memory/request, vector-search ms at corpus size N, $/query. Example latency budget for one query: auth ~10ms · query rewrite ~50ms · hybrid retrieval ~80ms · re-rank ~60ms · generation TTFT ~400ms (stream the rest) · grounding check in parallel. Retrieval should stay < ~300ms of the budget.
+
+> One-liner: *"The retrieval and app tiers scale horizontally (shard/replicate the vector DB, stateless services, cache aggressively); the real cost is generation, so I lean on continuous batching, prefix/semantic caching, and model-tiered routing, stream tokens to hide latency, and degrade gracefully to retrieval-only — quantifying GPU memory and the sub-300ms retrieval budget as I go."*
+
+## 9. Interviewer probes (model answers)
 - *Wrong doc retrieved?* → walk the funnel: chunking/embedding first, then hybrid + re-ranker, then top-k/metadata; diagnose with recall@k on a golden set.
 - *Specs change weekly?* → incremental/streaming index, versioning + effective dates, staleness monitors, serve current only; embedding swap = full re-embed.
 - *ITAR / access isolation?* → ACL/ITAR tags per chunk; filter at retrieval **and** re-check before generation; export-controlled data self-hosted, never co-mingled; live structured-store fetch for entitled data instead of indexing it; adversarial tests.
@@ -79,10 +92,10 @@ flowchart TD
 - *When is RAG the wrong tool?* → reasoning over the whole corpus (pre-computed summaries/agents), latency budget too tight, or knowledge tiny+static (put in prompt).
 - *LLM-judge unreliable?* → calibrate to human labels, use for relative ranking not absolute truth, audit periodically.
 
-## 9. Xometry angles to weave in unprompted
+## 10. Xometry angles to weave in unprompted
 ITAR → self-host + access-scope export-controlled data · hybrid (BM25) for exact part #s / ASME clause codes · name standards (ASME Y14.5 / ISO 1101) · frame mis-retrieval in $ (a wrong spec = a mis-quote or scrapped part) · structured store for quotes/capabilities, not vector search · RAG over fine-tune for citations+freshness+auditability.
 
-## 10. Questions to ask
+## 11. Questions to ask
 - What knowledge sources exist today, and how are specs/supplier data kept current?
 - Vector store in place, or greenfield? OpenSearch / pgvector / dedicated?
 - How is ITAR/data-isolation handled in the current stack?
