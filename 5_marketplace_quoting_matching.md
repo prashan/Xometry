@@ -28,6 +28,21 @@ The system is a win for Xometry if it:
 ## 2. Part A — Instant Quoting (regression / cost model)
 **Frame:** predict price (or cost, then apply margin policy) from part features.
 
+```mermaid
+flowchart TD
+  P[Part: CAD / extracted features<br/>material, process, qty, tolerances] --> FS[Feature service<br/>geometry: volume, area, # features, min wall, tightest tol]
+  FS --> M[Cost / price model<br/>GBT baseline + geometry encoder]
+  M --> U{Prediction uncertainty high?}
+  U -- no --> MP[Margin policy<br/>cost → price]
+  U -- yes --> HE[Defer to human estimator]
+  MP --> Q[Instant quote to buyer]
+  M -. model down / low-confidence .-> RB[Rules-based fallback estimate]
+  RB --> Q
+  Q --> WON{Job won?}
+  WON -- yes --> RC[(Realized cost from completed order)]
+  RC -. retrain · note: only won jobs yield labels = selection bias .-> M
+```
+
 - **Features:** geometry (volume, surface area, # features, complexity, min wall, tightest tolerance), material, process (CNC/3D-print/sheet), quantity (economies of scale), finish, lead time; market/demand signals; historical realized costs.
 - **Inputs come from** the extraction pipeline (designs #2/#3) + CAD parser — note the dependency.
 - **Model:** start with gradient-boosted trees (tabular, interpretable, strong baseline) → add a geometry encoder (GNN/3D CNN on the mesh) for complexity the hand features miss. Predict a **distribution / interval**, not just a point (uncertainty → risk pricing + when to defer to a human estimator).
@@ -40,10 +55,10 @@ The system is a win for Xometry if it:
 ```mermaid
 flowchart TD
   J[Job: features, material, process, qty, due date] --> CAND[Candidate generation<br/>capability filter: process, material, size, certs, ITAR]
-  CAND --> RANK[Ranking model<br/>P(on-time) · P(quality) · cost · capacity fit]
+  CAND --> RANK[Ranking model<br/>P on-time · P quality · cost · capacity fit]
   RANK --> CON[Constraint solver<br/>capacity, load balancing, geography]
   CON --> OFF[Offer / assignment]
-  OFF --> FB[(Outcomes: on-time?, quality, cost → labels)]
+  OFF --> FB[(Outcomes: on-time, quality, cost → labels)]
   FB -. retrain .-> RANK
 ```
 - **Candidate generation:** hard filters (process, material, part size, certifications, **ITAR-eligible**, geography).
