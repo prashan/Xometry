@@ -18,6 +18,11 @@ The system is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate (state assumptions, then compute)
+**Expected load (illustrative — confirm real numbers):** *internal* users (engineers + quoting/DFM tooling). ~1,000 users × ~30 queries/day ≈ 30k/day ≈ **~1 QPS avg, ~3–5 peak**; plus programmatic quoting calls (~50k quotes/day × 1–3 RAG calls) ≈ 2–5 QPS avg → **~10–25 QPS peak**. Design for **~25 QPS peak, headroom to ~50**.
+**Key NFRs:** retrieval < ~300 ms · p95 end-to-end < ~3 s (streamed) · 99.9% availability · index freshness in minutes · faithfulness/citation thresholds gated in CI · $/query budget.
+**Binding constraint:** *not* QPS (modest) — it's **freshness, ITAR isolation, auditability, accuracy**. Size GPUs/vector store comfortably; spend design effort on correctness + governance.
+
 ## 1. Clarify & scope (say assumptions out loud)
 - **Objective:** accurate, **cited**, up-to-date answers grounded in approved sources — no hallucinated specs (a wrong DFM rule mis-prices or mis-manufactures a part).
 - **Consumers:** internal engineering copilot, the quoting / DFM-feedback system, supplier-ops.
@@ -40,7 +45,7 @@ flowchart TD
   subgraph ING[Ingestion / Indexing]
     D[Sources: DFM rules, specs, standards,<br/>past quotes, supplier caps] --> CH[Structure-aware chunking]
     CH --> EM[Embedding model]
-    EM --> VDB[(Vector DB + metadata:<br/>source, version, process, material, ACL/ITAR)]
+    EM --> VDB[(Vector DB · HNSW or IVF-PQ index<br/>+ metadata: source, version, process, material, ACL/ITAR)]
     D -. on change .-> CH
   end
   Q[Query + identity / entitlements] --> RW[Query rewrite / expand]

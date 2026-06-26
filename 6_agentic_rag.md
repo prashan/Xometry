@@ -19,6 +19,11 @@ The system is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** only the **complex** slice of queries (triaged off plain RAG) — fewer requests (**~1–5 QPS**), but each is **3–4× heavier** (multiple LLM calls + retrievals), so token/GPU load per query is high. Budget by **trajectory cost**, not just QPS.
+**Key NFRs:** per-query latency/cost budget (bounded steps) · task-success + faithfulness thresholds · 99.9% availability with single-hop fallback · full trajectory observability.
+**Binding constraint:** **cost/latency per trajectory** — controlled by triage, step caps, parallel fan-out, caching, smaller planner model.
+
 ## 1. Clarify & scope
 - **Why agentic, not plain RAG?** The valuable questions are **multi-hop / multi-tool**: comparisons, multi-constraint lookups, or "find X then use it to find Y." A single retrieve→generate pass can't gather and reason across several sources.
 - **Consumers:** internal engineering copilot, supplier-ops, possibly a buyer-facing assistant (with tighter guardrails).

@@ -17,6 +17,11 @@ The platform is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** aggregate of all GenAI apps — interactive (copilot/concierge, **tens–hundreds of QPS** at peak) + batch (extraction, **token-heavy** but latency-relaxed). Size in **QPS per tier + tokens/sec**, not one number.
+**Key NFRs:** per-tier latency SLAs (interactive p95 TTFT < ~1 s) · throughput (tokens/sec/GPU) · 99.9% availability · $/1k tokens budget · safe rollout (shadow/canary/rollback).
+**Binding constraint:** **GPU memory** (max concurrency = f(GPU mem, context len)) and cost; separate interactive vs batch pools, ITAR-isolated pool.
+
 ## 1. Clarify & scope
 - **Tenants/workloads:** interactive (RAG copilot — low latency) vs batch (drawing/doc extraction — throughput); mixed model sizes; self-hosted (ITAR) + maybe some API.
 - **SLAs per tier:** e.g., interactive p95 first-token < 1s, full < 3s; batch optimizes $/token.

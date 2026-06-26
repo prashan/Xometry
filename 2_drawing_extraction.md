@@ -17,6 +17,11 @@ The system is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** batch-dominated — ~100k drawings/day ≈ **~1.2 docs/sec average, ~5–10/sec peak**; plus a low-latency path for live-quote extractions. **Throughput, not QPS**, is the design axis.
+**Key NFRs:** batch throughput (100k/day) · per-field accuracy + tolerance exactness + recall-of-missed-callouts thresholds · ITAR self-hosting · $/doc budget · reviewer-queue SLA.
+**Binding constraint:** **GPU throughput + accuracy**, not request rate. Scale with dynamic batching + autoscaled GPU pool + spot GPUs for backfills.
+
 ## 1. Clarify & scope
 - **Volume / latency:** batch backfill (100k/day) vs near-real-time for a live quote? Design for both — async batch + a low-latency path.
 - **Inputs:** **vector PDF vs raster scan vs native CAD** — branches the pipeline (huge point: don't OCR geometry already in a vector file).

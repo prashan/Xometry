@@ -20,6 +20,11 @@ The concierge is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** buyer-facing — many concurrent chat sessions. Assume **hundreds of concurrent sessions**, **~tens to low-hundreds of QPS** at peak (streamed). Higher and spikier than the internal RAG (#1).
+**Key NFRs:** p95 first-token < ~1 s, full < ~3 s (streamed) · 99.9% availability with human-handoff fallback · containment/conversion targets · **zero unauthorized commits / cross-customer or ITAR leaks** · $/session budget.
+**Binding constraint:** **interactive latency + safety at scale**; stateless app tier + externalized session store; model-tiering + semantic caching for cost.
+
 ## 1. Clarify & scope
 - **Who is it for?** Buyer-facing (get quotes, order status, manufacturability help) and/or an internal engineer copilot. Assume **buyer-facing primary**, internal mode reuses the engine.
 - **Top intents:** get an instant quote (often via a drawing upload), check quote/order status, DFM/manufacturability + material/process questions, find capabilities, account/billing routing, talk to a human.

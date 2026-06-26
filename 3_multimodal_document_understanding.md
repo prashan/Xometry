@@ -17,6 +17,11 @@ The system is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** all inbound doc types (RFQs/POs/specs/drawings/CAD) — assume **~100k–200k docs/day** ≈ ~1–3 docs/sec average, peaks higher; event-driven on upload + batch backfills. Mostly **throughput**.
+**Key NFRs:** per-doc-type throughput · per-field accuracy · intake cycle-time SLA · ITAR routing · $/doc by type.
+**Binding constraint:** **throughput + routing correctness** — cheapest path first (CAD/forms deterministic), reserve GPU VLM for hard docs.
+
 ## 1. Clarify & scope
 - **Inputs:** mixed — RFQs (email/PDF), purchase orders (structured-ish forms), spec sheets (text+tables), engineering drawings (PDF/scan), native CAD (STEP/IGES).
 - **Output:** a **unified structured schema** the quoting/marketplace systems consume, with per-field confidence.

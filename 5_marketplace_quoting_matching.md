@@ -19,6 +19,11 @@ The system is a win for Xometry if it:
 
 ---
 
+## 📏 Scale & NFR estimate
+**Expected load:** instant quoting in the buyer flow — assume ~50k–100k quote requests/day plus interactive buyers ≈ **~1–3 QPS avg, ~10–30 QPS peak** (sub-second SLA); matching runs per job (lower volume, can be async).
+**Key NFRs:** quoting latency **sub-second p95** · price/cost calibration · matching on-time/quality accuracy · drift monitoring · $/quote.
+**Binding constraint:** **low-latency feature serving + model accuracy/calibration**, not raw QPS. Precompute geometry features async; cache by part hash; rules-based fallback.
+
 ## 1. Clarify & scope
 - **Quoting:** given a part (geometry/features from extraction or CAD, material, process, quantity, tolerances, lead time), predict a **price** (and cost + margin) instantly.
 - **Matching:** given a job, rank suppliers by who can make it well, on time, at cost — a **ranking/retrieval** problem with capacity/constraints.
