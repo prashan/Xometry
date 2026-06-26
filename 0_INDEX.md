@@ -13,6 +13,7 @@ Each doc is standalone: clarify → metrics → architecture (diagram) → deep-
 | 4 | **LLM serving / inference platform** | Karim's deep-dive; serving/scale/cost | `4_llm_serving_platform.md` |
 | 5 | **Marketplace ML: quoting + matching** | the business framing (pricing, supplier match) | `5_marketplace_quoting_matching.md` |
 | 6 | **Agentic RAG** | "agentic RAG" / multi-tool, multi-hop assistant | `6_agentic_rag.md` |
+| 7 | **Conversational concierge chatbot** | "design a chatbot/assistant" front-door (agentic-RAG-powered) | `7_concierge_chatbot.md` |
 | ★ | **Sous Chef AI (Karim rapport + worked design)** | rapport with Karim + an agentic-multimodal-RAG analog | `karim_souschef_prep.md` |
 
 Companion: `../Xometry_RAG_Cheatsheet.pdf` (one-page glanceable) and `../Xometry_ML_System_Design_Prep.md` (combined overview + framework + rapid-fire).
