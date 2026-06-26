@@ -3,6 +3,7 @@
 **Prompt:** *"Design an agentic RAG system: instead of a fixed retrieve→generate pipeline, an LLM agent dynamically plans and orchestrates retrieval and other tools to answer complex, multi-step manufacturing questions (e.g., 'Can we make this part, by when, at what price, and any DFM issues?')."*
 
 > Builds on design #1 (RAG). The shift: retrieval becomes a **tool the agent calls** — possibly many times — and the LLM **plans, acts, observes, and reflects** in a loop rather than running one fixed pass.
+> **#6 vs #7:** this is the **engine** (a technique — the reasoning loop; can be headless / single-query / batch). **#7 (concierge)** is a customer-facing **product** that *wraps* this engine with auth, session memory, actions+confirmation, and human handoff. Reach for #6 when the prompt says "agentic RAG"; for "design a chatbot/assistant," go to #7 and note its brain is #6.
 > **Panel:** Karim Abdelkader (Staff Cloud/MLOps — serving, cost, reliability) · Henrique Oliveira Evangelista (SWE/ML — interfaces, tool contracts, testing).
 
 ---
@@ -37,10 +38,10 @@ flowchart TD
   TRI -->|complex| AG[Agent orchestrator<br/>plan · act · observe · reflect]
   AG <--> TOOLS[Tools:<br/>vector + BM25 retriever · structured store API ·<br/>drawing extractor · supplier lookup · quoting model · calculator]
   AG --> MEM[(Working memory / scratchpad)]
-  AG --> REF{Reflect: enough and grounded?}
+  AG --> REF{Agent self-reflect:<br/>enough and grounded?}
   REF -->|no, retrieve/act more| AG
   REF -->|yes| SYN[Synthesize grounded + cited answer]
-  RAG --> GC[Grounding / citation + output guardrails]
+  RAG --> GC[Grounding / citation check<br/>independent + output guardrails]
   SYN --> GC
   GC -->|supported| ANS[Answer]
   GC -->|high-stakes / low-confidence| HITL[Human review]

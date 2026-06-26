@@ -14,6 +14,8 @@ Each doc is standalone: clarify → metrics → architecture (diagram) → deep-
 | 5 | **Marketplace ML: quoting + matching** | the business framing (pricing, supplier match) | `5_marketplace_quoting_matching.md` |
 | 6 | **Agentic RAG** | "agentic RAG" / multi-tool, multi-hop assistant | `6_agentic_rag.md` |
 | 7 | **Conversational concierge chatbot** | "design a chatbot/assistant" front-door (agentic-RAG-powered) | `7_concierge_chatbot.md` |
+
+> **#6 vs #7:** #6 is the **engine** (agentic RAG — the reasoning loop, can be headless); #7 is the **product** (a customer-facing concierge that wraps the engine with auth, session memory, actions+confirmation, and human handoff). "Agentic RAG" prompt → #6; "design a chatbot/assistant" → #7 (brain = #6, or lean single-shot RAG when right-sized).
 | ★ | **Sous Chef AI (Karim rapport + worked design)** | rapport with Karim + an agentic-multimodal-RAG analog | `karim_souschef_prep.md` |
 
 Companion: `../Xometry_RAG_Cheatsheet.pdf` (one-page glanceable) and `../Xometry_ML_System_Design_Prep.md` (combined overview + framework + rapid-fire).

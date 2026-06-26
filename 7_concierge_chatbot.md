@@ -3,6 +3,7 @@
 **Prompt:** *"Design a conversational concierge for Xometry — a chat front door where a buyer (or internal engineer) can ask questions, upload a drawing to get an instant quote, check order status, get DFM/manufacturability help, and reach a human when needed."*
 
 > **Key distinction (say this up front):** a concierge is a **product / front-door**, not a technique. The concierge adds the **conversational layer**: intent routing, multi-turn memory, **action tools with confirmation**, human handoff, and graceful fallback.
+> **#7 vs #6:** #6 (agentic RAG) is the **engine** — the reasoning loop, which can be headless. #7 is the **product** that wraps it (auth, session state, actions, human handoff, UX, containment/conversion KPIs). The agent-loop diagram appears in both because #6 is the *core of* #7. Agentic RAG can exist without a chatbot; the chatbot can't exist without a retrieval engine underneath.
 > **Right-size it:** the default is a **single LLM agent doing grounded RAG + tool calls, with guardrails and confidence-gated human handoff** — not a multi-agent swarm. Reserve a multi-agent validation loop for the high-stakes **quote/commit** path only (a bank needs it everywhere; a manufacturing marketplace doesn't).
 > **Panel:** Karim Abdelkader (Staff Cloud/MLOps — serving, latency, reliability) · Henrique Oliveira Evangelista (SWE/ML — interfaces, contracts).
 
